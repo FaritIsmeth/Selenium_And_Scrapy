@@ -17,10 +17,6 @@ while counter != len(df):
 	counter += 1
 
 while counter3 != len(get_name):
-	#search_uen=get_uen.get(f'key{counter3}')[0]
-	#search_entity_name=get_uen.get(f'key{counter3}')[1]
-	#search_business_name=get_name.get(f'key{counter3}')
-	#print(f'Row {counter3}: {search_entity_name} has UEN: {search_uen}')
 	print(f'Position {counter3}: Finding {get_name.get(f"key{counter3}")}')
 	print('\n')
 	get_filtered_result = df3[df3['entity_name'].apply(str).str.fullmatch(get_name.get(f"key{counter3}"),na=False,case=False)]
@@ -39,11 +35,3 @@ while counter3 != len(get_name):
 	print("-"*50)
 	print('\n\n\n')
 	counter3 += 1
-
-'''
-while counter3 != len(get_name):
-	#search for all rows from 'main name' inside 'entity_name'
-	get_filtered_result = df3[df3['entity_name'].str.fullmatch(get_name.get(f"key{counter3}"),na=False,case=False)]
-	print(get_filtered_result)
-	counter3 += 1
-'''
