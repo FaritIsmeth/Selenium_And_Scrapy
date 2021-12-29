@@ -7,16 +7,10 @@ get_data={}
 get_data2={}
 counter=counter2=counter3=0
 df = pandas.read_csv('entities-registered-with-acra.csv', dtype=str)
-df2 = pandas.read_csv('SG POI Normalisation Working Sheet - list4 data.csv', dtype=str)
+df2 = pandas.read_csv('input.csv', dtype=str)
 columns = ['entity_name','reg_postal_code']
 newdf = pandas.DataFrame(df, columns=columns)
-#get_filter = newdf[newdf['entity_name'].str.contains(f'{name}',na=False,case=False)]
 
-'''
-while counter != count_row:
-	get_data[f'key{counter}'] = [df.at[counter, 'entity_name'],df.at[counter, 'reg_postal_code']]
-	counter +=1
-'''
 while counter2 != len(df2):
 	get_data2[f'key{counter2}'] = df2.at[counter2, 'main_name']
 	counter2 +=1
@@ -24,13 +18,11 @@ while counter2 != len(df2):
 
 while counter3 != len(get_data2):
 	get_filter = newdf[newdf['entity_name'].str.contains(get_data2.get(f"key{counter3}"),na=False,case=False)]
-	#get_filter = newdf[(newdf['entity_name'].str.contains(get_data2.get(f"key{counter3}")[0],na=False,case=False)) & (newdf['reg_postal_code'].str.contains(get_data2.get(f"key{counter3}")[1],na=False,case=False))]
 	print(f'Position {counter3}: Finding {get_data2.get(f"key{counter3}")}')
 	with open('get_postal_code.csv', 'a') as myfile:
 		myfile.write(f'Finding {get_data2.get(f"key{counter3}")}\n\n')
 	split_key=get_data2.get(f'key{counter3}').split()
 	if get_filter.empty and len(split_key) > 3:
-		#split_key=get_data2.get(f'key{counter3}').split()
 		retry=" ".join(split_key[0:3])
 		new_retry=retry.replace("(","(")
 		if "(" in new_retry and new_retry.count(")") == 0:
@@ -39,7 +31,6 @@ while counter3 != len(get_data2):
 			new_retry=retry.replace(")",")")
 		print(f'\n\nNot Found: {get_data2.get(f"key{counter3}")}. Searching for {new_retry} instead.\n\n')
 		get_filter2 = newdf[newdf['entity_name'].str.contains(f'{new_retry}',na=False,case=False)]
-		#get_filter = newdf(newdf['entity_name'].str.contains(retry),na=False,case=False)
 		if get_filter2.empty:
 			retry_again=" ".join(split_key[0:2])
 			new_retry_again=retry_again.replace("(","(")
@@ -70,7 +61,6 @@ while counter3 != len(get_data2):
 			new_retry_a=retry_a.replace(")",")")
 		print(f'\n\nNot Found: {get_data2.get(f"key{counter3}")}. Searching for {new_retry_a} instead.\n\n')
 		get_filter_a = newdf[newdf['entity_name'].str.contains(f'{new_retry_a}',na=False,case=False)]
-		#get_filter = newdf(newdf['entity_name'].str.contains(retry),na=False,case=False)
 		if get_filter_a.empty:
 			print(f'Not Found\n\n\n')
 			with open('get_postal_code.csv', 'a') as myfile:
@@ -88,7 +78,6 @@ while counter3 != len(get_data2):
 			new_retry_3=retry3.replace(")",")")
 		print(f'\n\nNot Found: {get_data2.get(f"key{counter3}")}. Searching for {new_retry_3} instead.\n\n')
 		get_filter4 = newdf[newdf['entity_name'].str.contains(f'{new_retry_3}',na=False,case=False)]
-		#get_filter = newdf(newdf['entity_name'].str.contains(retry),na=False,case=False)
 		if get_filter4.empty:
 			print(f'Not Found\n\n\n')
 			with open('get_postal_code.csv', 'a') as myfile:
@@ -103,21 +92,4 @@ while counter3 != len(get_data2):
 		print(f'Found: {get_filter}\n\n\n')
 		with open('get_postal_code.csv', 'a') as myfile:
 			myfile.write(f'Found: {get_filter}\n\n\n')
-	#with open('get_postal_code.csv', 'a') as myfile:
-		#myfile.write(f'{get_filter}\n')
 	counter3 +=1
-
-#get lat,long
-#print(get_data2.get("key10")[1])
-'''
-split_key=get_data2.get(f"key0").split()
-retry=" ".join(split_key[0:2])
-new_string=retry.replace("(","\(")
-if ")" not in new_string:
-	new_string+="\)"
-else:
-	new_string=retry.replace(")","\)")	
-#print(new_string.count("\("))
-
-print(new_string)
-'''
